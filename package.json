@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "postcss ./src/css/tailwind.css -o tailwind.css --watch"
+    "dev": "postcss ./src/css/tailwind.css -o public/build/tailwind.css --watch"
   },
   "repository": {
     "type": "git",
