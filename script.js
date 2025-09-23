@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const commandSpan = document.querySelector('.command-text');
 
     if (terminalContainer && terminalContent && commandSpan) {
-        const commandText = "Welcome to my portfolio!";
+        const commandText = "Thy shall be burdened with glorious purpose!";
 
         let i = 0;
         const typeCommand = () => {
