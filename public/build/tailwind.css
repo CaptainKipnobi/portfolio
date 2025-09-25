@@ -1326,6 +1326,14 @@ section {
   --tw-text-opacity: 1;
   color: rgb(0 80 10 / var(--tw-text-opacity, 1));
 }
+.dark\:hover\:text-accent:hover:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(0 225 11 / var(--tw-text-opacity, 1));
+}
+.dark\:hover\:text-secondary:hover:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(63 181 0 / var(--tw-text-opacity, 1));
+}
 .dark\:hover\:shadow-green-500\/20:hover:is(.dark *) {
   --tw-shadow-color: rgb(34 197 94 / 0.2);
   --tw-shadow: var(--tw-shadow-colored);
