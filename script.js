@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Versturen naar jou...');
                 const emailToYou = await emailjs.send(
                     "service_ryo2577", // Jouw service ID
-                    "template_contact_to_you", // Template voor jou
+                    "template_8dg1nw7", // Template voor jou
                     {
                         name: name,
                         email: email,
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Versturen auto-reply...');
                 const autoReply = await emailjs.send(
                     "service_ryo2577", // Zelfde service ID
-                    "template_auto_reply", // Template voor bezoeker
+                    "template_8h3dp7f", // Template voor bezoeker
                     {
                         to_name: name,
                         to_email: email,
