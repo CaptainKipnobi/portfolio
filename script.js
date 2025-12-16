@@ -96,19 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             emailjs.send("service_ryo2577", "template_8dg1nw7", parms).then(alert("Email Sent!!"))
         }
-
-            // Show success message
-            const button = contactForm.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
-            button.textContent = 'Message Sent!';
-
-            // Reset form
-            contactForm.reset();
-
-            // Restore button text after a delay
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 3000);
         });
     }
 
