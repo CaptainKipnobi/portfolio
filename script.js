@@ -1,28 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
-    emailjs.init({
-        publicKey: "87d3x7icjWAOa-KCH"
-    });
-    // Theme toggle functionality
+    // ========== EMAILJS INITIALISATIE ==========
+    emailjs.init("87d3x7icjWAOa-KCH");
+
+    // ========== THEME TOGGLE ==========
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
     const icon = themeToggle.querySelector('i');
 
-    // Check for saved theme preference or prefer-color-scheme
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    // Apply theme based on saved preference or system preference
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
         html.classList.add('dark');
         icon.classList.replace('fa-moon', 'fa-sun');
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000000');
     }
 
-    // Toggle theme when button is clicked
     themeToggle.addEventListener('click', function () {
         html.classList.toggle('dark');
 
-        // Update the icon
         if (html.classList.contains('dark')) {
             icon.classList.replace('fa-moon', 'fa-sun');
             localStorage.setItem('theme', 'dark');
@@ -34,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Mobile navigation toggle
+    // ========== MOBILE NAVIGATION ==========
     const menuToggle = document.getElementById('menuToggle');
     const closeMenu = document.getElementById('closeMenu');
     const mobileMenu = document.getElementById('mobileMenu');
@@ -50,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.body.classList.remove('overflow-hidden');
         });
 
-        // Close mobile menu when clicking on a link
         const mobileLinks = mobileMenu.querySelectorAll('a');
         mobileLinks.forEach(link => {
             link.addEventListener('click', function () {
@@ -60,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Smooth scrolling for anchor links
+    // ========== SMOOTH SCROLLING ==========
     document.querySelectorAll('a[href^="#"').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -80,38 +75,60 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Form submission handling
+    // ========== FORM SUBMISSION - ALLEEN NAAR JOU ==========
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
 
-        function sendMail(){
-            let parms = {
-                name : document.getElementById('name').value,
-                email : document.getElementById('email').value,
-                message : document.getElementById('message').value
-            }
+            // Button element
+            const button = contactForm.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
 
-            emailjs.send("service_ryo2577", "template_8dg1nw7", parms).then(alert("Email Sent!!"))
-        }
+            // Toon loading state
+            button.textContent = 'Sending...';
+            button.disabled = true;
+
+            // Verstuur alleen naar jou (template 1)
+            emailjs.send("service_ryo2577", "template_8dg1nw7", {
+                name: name,
+                email: email,
+                message: message
+            })
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    button.textContent = 'Message Sent!';
+                    contactForm.reset();
+                })
+                .catch(function(error) {
+                    console.log('FAILED...', error);
+                    button.textContent = 'Error - Try Again';
+                })
+                .finally(function() {
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 3000);
+                });
         });
     }
 
-    // Add scroll events for header shadow and reveal animations
+    // ========== SCROLL ANIMATIONS ==========
     const header = document.querySelector('header');
     const sections = document.querySelectorAll('section');
 
     function checkScroll() {
-        // Header shadow
         if (window.scrollY > 0) {
             header.classList.add('shadow-md');
         } else {
             header.classList.remove('shadow-md');
         }
 
-        // Reveal animations for sections
         sections.forEach(section => {
             const sectionTop = section.getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
@@ -124,10 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener('scroll', checkScroll);
-    // Run on page load
     checkScroll();
 
-    // Add intersection observer for animations
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -139,13 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (entry.isIntersecting) {
                 entry.target.classList.add('opacity-100', 'translate-y-0');
                 entry.target.classList.remove('opacity-0', 'translate-y-4');
-                // Stop observing once the animation is triggered
                 observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Terminal animation
+    // ========== TERMINAL ANIMATION ==========
     const terminalContainer = document.getElementById('terminal-container');
     const terminalContent = document.querySelector('.terminal-content');
     const commandSpan = document.querySelector('.command-text');
@@ -160,17 +174,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 i++;
                 setTimeout(typeCommand, 50);
             } else {
-                // Add blinking cursor after typing
                 const cursor = document.createElement('span');
                 cursor.className = 'inline-block w-2 h-5 bg-gray-900 dark:bg-white ml-1 animate-blink align-middle';
                 terminalContent.appendChild(cursor);
             }
         };
 
-        // Start typing after a delay
         setTimeout(typeCommand, 1000);
     } else {
-        // Fallback for original terminal structure
         const terminal = document.querySelector('.terminal-body');
         if (terminal) {
             const commandText = terminal.querySelector('.command').textContent;
@@ -183,16 +194,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     i++;
                     setTimeout(typeCommand, 50);
                 } else {
-                    // Add blinking cursor after typing
                     terminal.querySelector('.command').insertAdjacentHTML('afterend', '<span class="animate-blink">_</span>');
                 }
             };
 
-            // Start typing after a delay
             setTimeout(typeCommand, 1000);
         }
     }
-
-
-
 });
