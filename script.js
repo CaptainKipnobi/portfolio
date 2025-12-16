@@ -1,9 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // ========== EMAILJS INITIALISATIE ==========
-    // EmailJS initialiseren met jouw public key
-    emailjs.init("87d3x7icjWAOa-KCH"); // Vervang dit indien nodig met je juiste public key
-
-    // ========== THEME TOGGLE ==========
+    emailjs.init('87d3x7icjWAOa-KCH')
+    // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
     const icon = themeToggle.querySelector('i');
@@ -35,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ========== MOBILE NAVIGATION ==========
+    // Mobile navigation toggle
     const menuToggle = document.getElementById('menuToggle');
     const closeMenu = document.getElementById('closeMenu');
     const mobileMenu = document.getElementById('mobileMenu');
@@ -61,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ========== SMOOTH SCROLLING ==========
+    // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -81,104 +78,52 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ========== FORM SUBMISSION MET EMAILJS ==========
+    // Form submission handling
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', async function (e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            const serviceID = 'service_ryo2577'
+            const template1 = 'template_8h3dp7f'
+            const template2 = 'template_8dg1nw7'
 
-            // Button element voor feedback
+            emailjs.sendForm(serviceID, template1, this)
+                .then(() => {
+                    btn.value = 'submit';
+                    alert('Sent!');
+                }, (err) => {
+                    btn.value = 'submit';
+                    alert(JSON.stringify(err));
+
+                });
+        })
+        emailjs.sendForm(serviceID, template2, this)
+            .then(() => {
+                btn.value = 'submit';
+                alert('Sent!');
+            }, (err) => {
+                btn.value = 'submit';
+                alert(JSON.stringify(err));
+            });
+    }
+
+            // Show success message
             const button = contactForm.querySelector('button[type="submit"]');
             const originalText = button.textContent;
-            const originalHTML = button.innerHTML;
+            button.textContent = 'Message Sent!';
 
-            // Toon loading state
-            button.textContent = 'Sending...';
-            button.disabled = true;
+            // Reset form
+            contactForm.reset();
 
-            try {
-                // 1. VERSTUUR NAAR JOU (Contact Us template)
-                console.log('Versturen naar jou...');
-                const emailToYou = await emailjs.send(
-                    "service_ryo2577", // Jouw service ID
-                    "template_8dg1nw7", // Template voor jou
-                    {
-                        name: name,
-                        email: email,
-                        message: message,
-                        from_name: name,
-                        from_email: email,
-                        to_email: "imadaha18_@outlook.com"
-                    }
-                );
-                console.log('Email naar jou succesvol:', emailToYou.status);
-
-                // 2. VERSTUUR AUTO-REPLY NAAR BEZOEKER
-                console.log('Versturen auto-reply...');
-                const autoReply = await emailjs.send(
-                    "service_ryo2577", // Zelfde service ID
-                    "template_8h3dp7f", // Template voor bezoeker
-                    {
-                        to_name: name,
-                        to_email: email,
-                        message: message
-                    }
-                );
-                console.log('Auto-reply succesvol:', autoReply.status);
-
-                // Succesmelding
-                button.textContent = '✓ Message Sent!';
-                button.style.backgroundColor = '#10B981'; // Groen voor succes
-
-                // Reset form
-                contactForm.reset();
-
-                // Toon popup melding
-                showNotification('Message sent successfully! You will receive a confirmation email.', 'success');
-
-            } catch (error) {
-                console.error('EmailJS Error:', error);
-                button.textContent = '✗ Error - Try Again';
-                button.style.backgroundColor = '#EF4444'; // Rood voor error
-                showNotification('Failed to send message. Please try again later.', 'error');
-            } finally {
-                // Herstel button na 3 seconden
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.innerHTML = originalHTML;
-                    button.disabled = false;
-                    button.style.backgroundColor = ''; // Reset kleur
-                }, 3000);
-            }
+            // Restore button text after a delay
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 3000);
         });
     }
 
-    // ========== NOTIFICATION FUNCTIE ==========
-    function showNotification(message, type = 'success') {
-        // Creëer notification element
-        const notification = document.createElement('div');
-        notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transform transition-all duration-300 ${
-            type === 'success'
-                ? 'bg-green-500 text-white'
-                : 'bg-red-500 text-white'
-        }`;
-        notification.textContent = message;
-
-        // Voeg toe aan body
-        document.body.appendChild(notification);
-
-        // Verwijder na 5 seconden
-        setTimeout(() => {
-            notification.remove();
-        }, 5000);
-    }
-
-    // ========== SCROLL ANIMATIONS ==========
+    // Add scroll events for header shadow and reveal animations
     const header = document.querySelector('header');
     const sections = document.querySelectorAll('section');
 
@@ -224,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, observerOptions);
 
-    // ========== TERMINAL ANIMATION ==========
+    // Terminal animation
     const terminalContainer = document.getElementById('terminal-container');
     const terminalContent = document.querySelector('.terminal-content');
     const commandSpan = document.querySelector('.command-text');
@@ -271,4 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(typeCommand, 1000);
         }
     }
+
+
+
 });
