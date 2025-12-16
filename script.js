@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    emailjs.init('87d3x7icjWAOa-KCH')
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
@@ -84,29 +83,11 @@ document.addEventListener('DOMContentLoaded', function () {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            const serviceID = 'service_ryo2577'
-            const template1 = 'template_8h3dp7f'
-            const template2 = 'template_8dg1nw7'
 
-            emailjs.sendForm(serviceID, template1, this)
-                .then(() => {
-                    btn.value = 'submit';
-                    alert('Sent!');
-                }, (err) => {
-                    btn.value = 'submit';
-                    alert(JSON.stringify(err));
 
-                });
-        })
-        emailjs.sendForm(serviceID, template2, this)
-            .then(() => {
-                btn.value = 'submit';
-                alert('Sent!');
-            }, (err) => {
-                btn.value = 'submit';
-                alert(JSON.stringify(err));
-            });
-    }
+            // Here you would typically send the data to a server
+            // For demo purposs, we'll just log it and show a success message
+            console.log('Form Submitted:', { name, email, message });
 
             // Show success message
             const button = contactForm.querySelector('button[type="submit"]');
