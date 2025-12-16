@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    emailjs.init({
+        publicKey: "87d3x7icjWAOa-KCH"
+    });
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
     const html = document.documentElement;
@@ -84,10 +87,15 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
 
 
+        function sendMail(){
+            let parms = {
+                name : document.getElementById('name').value,
+                email : document.getElementById('email').value,
+                message : document.getElementById('message').value
+            }
 
-            // Here you would typically send the data to a server
-            // For demo purposs, we'll just log it and show a success message
-            console.log('Form Submitted:', { name, email, message });
+            emailjs.send("service_ryo2577", "template_8dg1nw7", parms).then(alert("Email Sent!!"))
+        }
 
             // Show success message
             const button = contactForm.querySelector('button[type="submit"]');
