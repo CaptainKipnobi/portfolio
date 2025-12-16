@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Form submission handling met EmailJS
+    // Form submission handling met EmailJS
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
@@ -82,34 +83,45 @@ document.addEventListener('DOMContentLoaded', function () {
             const originalText = button.textContent;
 
             button.textContent = 'Sending...';
+            button.disabled = true;
 
-            // Verstuur email naar jou
-            emailjs.send("service_ryo2577", "template_8dg1nw7", {
-                from_name: name,
-                from_email: email,
-                message: message
+            // Eerste: Verstuur email naar JOU (nieuw contact bericht)
+            emailjs.send("service_ryo2577", "template_8dg1nw7", { // PAS DIT AAN
+                name: name,                // ((name)) in jouw template
+                email: email,              // ((email)) in jouw template
+                message: message,          // ((message)) in jouw template
+                from_name: name,           // Extra voor consistentie
+                from_email: email,         // Extra voor consistentie
+                to_email: "imadaha18_@outlook.com" // Jouw email
             }).then(() => {
                 console.log("Notification email sent to you successfully.");
-            }, (err) => {
-                console.error("Error sending notification email:", err);
-            });
 
-            // Verstuur confirmation naar gebruiker
-            emailjs.send("service_ryo2577", "template_8h3dp7f", {
-                to_name: name,
-                to_email: email
+                // Tweede: Verstuur auto-reply naar BEZOEKER
+                return emailjs.send("service_ryo2577", "template_8h3dp7f", { // PAS DIT AAN
+                    to_name: name,          // (name) in auto-reply template
+                    to_email: email,        // Gebruiker's email
+                    message: message        // Inhoud van hun bericht
+                });
+
             }).then(() => {
                 console.log("Confirmation email sent to user successfully.");
-            }, (err) => {
-                console.error("Error sending confirmation email:", err);
+                button.textContent = 'Message Sent!';
+                contactForm.reset();
+
+                // Laat een succesmelding zien
+                alert('Thank you! Your message has been sent. You will receive a confirmation email shortly.');
+
+            }).catch((err) => {
+                console.error("Error sending emails:", err);
+                button.textContent = 'Error - Try Again';
+                alert('There was an error sending your message. Please try again later.');
+
+            }).finally(() => {
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 3000);
             });
-
-            button.textContent = 'Message Sent!';
-            contactForm.reset();
-
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 3000);
         });
     }
 
