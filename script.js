@@ -111,10 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Laat een succesmelding zien
                 alert('Thank you! Your message has been sent. You will receive a confirmation email shortly.');
 
-            }).catch((err) => {
-                console.error("Error sending emails:", err);
-                button.textContent = 'Error - Try Again';
-                alert('There was an error sending your message. Please try again later.');
 
             }).finally(() => {
                 setTimeout(() => {
